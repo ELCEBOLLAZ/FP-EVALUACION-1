@@ -1,1 +1,139 @@
+import java.util.Scanner;
+import java.util.Random;
 
+public class ArrayOperations {
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        Random random = new Random();
+
+        // Menú principal
+        while (true) {
+            System.out.println("\nSeleccione una opción:");
+            System.out.println("1. Buscar valores en el arreglo");
+            System.out.println("2. Copiar parcialmente el arreglo");
+            System.out.println("3. Filtrar valores en el arreglo");
+            System.out.println("4. Salir");
+
+            int option = scanner.nextInt();
+
+            switch (option) {
+                case 1:
+                    buscarValores(scanner, random);
+                    break;
+                case 2:
+                    copiarParcial(scanner, random);
+                    break;
+                case 3:
+                    filtrarValores(scanner, random);
+                    break;
+                case 4:
+                    System.out.println("Saliendo...");
+                    scanner.close();
+                    return;
+                default:
+                    System.out.println("Opción no válida, intente de nuevo.");
+            }
+        }
+    }
+
+    // Método para llenar el arreglo con valores pares aleatorios
+    public static int[] llenarArreglo(int size, int min, int max) {
+        Random random = new Random();
+        int[] array = new int[size];
+
+        for (int i = 0; i < size; i++) {
+            array[i] = random.nextInt((max - min) / 2 + 1) * 2 + min;
+        }
+
+        return array;
+    }
+
+    // Método para imprimir el arreglo
+    public static void imprimirArreglo(int[] array) {
+        System.out.print("[");
+        for (int i = 0; i < array.length; i++) {
+            System.out.print(array[i]);
+            if (i < array.length - 1) {
+                System.out.print(", ");
+            }
+        }
+        System.out.println("]");
+    }
+
+    // 1. Buscar valores en el arreglo
+    public static void buscarValores(Scanner scanner, Random random) {
+        int[] array = llenarArreglo(15, 2, 100);
+        imprimirArreglo(array);
+
+        System.out.print("Ingrese el valor a buscar: ");
+        int valor = scanner.nextInt();
+
+        int posicion = -1;
+        for (int i = 0; i < array.length; i++) {
+            if (array[i] == valor) {
+                posicion = i;
+                break;
+            }
+        }
+
+        if (posicion != -1) {
+            System.out.println("El valor " + valor + " se encuentra en la posición: " + posicion);
+        } else {
+            System.out.println("El valor " + valor + " no se encuentra en el arreglo.");
+        }
+    }
+
+    // 2. Copiar parcialmente un arreglo
+    public static void copiarParcial(Scanner scanner, Random random) {
+        int[] array = llenarArreglo(15, 1, 20);
+        imprimirArreglo(array);
+
+        System.out.print("Ingrese la posición inicial: ");
+        int inicio = scanner.nextInt();
+        System.out.print("Ingrese la posición final: ");
+        int fin = scanner.nextInt();
+
+        if (inicio < 0 || fin >= array.length || inicio > fin) {
+            System.out.println("Rango inválido.");
+            return;
+        }
+
+        int[] copia = new int[fin - inicio + 1];
+        for (int i = inicio; i <= fin; i++) {
+            copia[i - inicio] = array[i];
+        }
+
+        System.out.println("Arreglo copiado: ");
+        imprimirArreglo(copia);
+    }
+
+    // 3. Filtrar valores en el arreglo
+    public static void filtrarValores(Scanner scanner, Random random) {
+        int[] array = llenarArreglo(15, 1, 100);
+        imprimirArreglo(array);
+
+        System.out.print("Ingrese el valor mínimo para el filtro: ");
+        int min = scanner.nextInt();
+        System.out.print("Ingrese el valor máximo para el filtro: ");
+        int max = scanner.nextInt();
+
+        int contador = 0;
+        for (int value : array) {
+            if (value >= min && value <= max) {
+                contador++;
+            }
+        }
+
+        int[] filtrado = new int[contador];
+        int index = 0;
+        for (int value : array) {
+            if (value >= min && value <= max) {
+                filtrado[index++] = value;
+            }
+        }
+
+        System.out.println("Arreglo filtrado: ");
+        imprimirArreglo(filtrado);
+    }
+}
